@@ -1,10 +1,9 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Home from "../screens/home";
 import Login from "../screens/login";
 import NewUser from "../screens/cadastro";
-
+import Crud from "../api/bancodedados/crud";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,8 +17,8 @@ const AppRoute = () => {
                     options={{ headerShown : false }}
                     />
                 <Stack.Screen
-                    name="Home"
-                    component={Home}
+                    name="Crud"
+                    component={Crud}
                     options={{ headerShown : false }}>
                 </Stack.Screen>
                 <Stack.Screen

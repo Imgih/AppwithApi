@@ -23,8 +23,7 @@ export const styles = StyleSheet.create({
         width: '80%',
         padding: 10,
         margin: 10,
-        color: "white",
-        placeholderTextColor: "white"
+        color: "white"
     },
 
     formButton: {
