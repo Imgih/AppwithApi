@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity,Alert } from "react-native";
 import React, * as react from "react";
 import { db } from "../../firebase/firebaseconfig";
 import {
@@ -16,19 +16,20 @@ export default function Crud() {
   const [descricao, setDescricao] = react.useState<string>("");
   const [preco, setPreco] = react.useState<number>();
   const [quantidade, setQuantida] = react.useState<number>();
-  const [prodInfo, setprodInfo] = react.useState<any | undefined>(null);
+  const [prodInfo, setProdInfo] = react.useState<any | undefined>(null);
   
 
 
   const handleCreate = async () => {
     try {
-      await setDoc(doc(db, "estoque", "ProdutoID"), {
+      await setDoc(doc(db, "estoque", name), {
         Produto: name,
         Nome: name,
         descricao: descricao,
         preco: preco,
         quantidade: quantidade
       });
+      Alert.alert("Sucesso", "Produto criado com sucesso!");
     } catch (error: any) {
       console.log("Erro ao criar o documento: ", error);
     }
@@ -36,25 +37,30 @@ export default function Crud() {
 
   const handleRead = async () => {
     try {
-      const docRef = doc(db, "estoque", "produtoID");
+      const docRef = doc(db, "estoque", name);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log("Documento data:", docSnap.data());
-        setprodInfo(docSnap.data());
+        console.log("Document data:", docSnap.data());
+        const data = docSnap.data();
+        setProdInfo({
+          Nome: data.Nome,
+          descricao: data.descricao,
+          preco: data.preco,
+          quantidade: data.quantidade
+        });
       } else {
-        console.log("Nenhum documento!");
+        console.log("No such document!");
+        setProdInfo(null); // Se não houver documento, defina prodInfo como null para limpar os dados antigos
       }
-
     } catch (error: any) {
       console.log("Erro ao ler documento: ", error);
-
     }
   }
 
   const handleUpdate = async () => {
     try {
-      const docRef = doc(db, "estoque", "produtoID");
+      const docRef = doc(db, "estoque", name);
       await updateDoc(docRef, {
         Produto: name,
         Nome: name,
@@ -62,19 +68,21 @@ export default function Crud() {
         preco: preco,
         quantidade: quantidade
       });
+      Alert.alert("Sucesso", "Produto atualizado com sucesso!");
     } catch (error: any) {
-      console.log("Erro ao atualizar o documento: ", error);
+      console.log("Error updating document: ", error);
     }
   }
 
   const handleDelete = async () => {
     try {
-      await deleteDoc(doc(db, "estoque", "produtoID"));
+      const docRef = doc(db, "estoque", name);
+      await deleteDoc(docRef);
+      Alert.alert("Sucesso", "Produto deletado com sucesso!");
     } catch (error: any) {
       console.log("Erro ao deletar o documento: ", error);
     }
   }
-
 
   return (
     <View style={styles.container}>
@@ -128,9 +136,10 @@ export default function Crud() {
         </View>
       </View>
       <View style={styles.dataContainer}>
-        <Text style={{ color: "white", fontSize: 20 }}>{prodInfo?.Username}</Text>
-        <Text style={{ color: "white", fontSize: 20 }}>{prodInfo?.name}</Text>
-        <Text style={{ color: "white", fontSize: 20 }}>{prodInfo?.descricao}</Text>
+        <Text style={{ color: "white", fontSize: 20, marginBottom: 20, marginTop: 50 }}>Nome: {prodInfo?.Nome}</Text>
+        <Text style={{ color: "white", fontSize: 20, marginBottom: 20  }}>Descrição: {prodInfo?.descricao}</Text>
+        <Text style={{ color: "white", fontSize: 20, marginBottom: 10  }}>Preço: {prodInfo?.preco}</Text>
+        <Text style={{ color: "white", fontSize: 20, marginBottom: 10  }}>Quantidade: {prodInfo?.quantidade}</Text>
       </View>
     </View>
   );
@@ -189,6 +198,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     borderRadius: 5,
+    color: '#white'
     
   },
 });
