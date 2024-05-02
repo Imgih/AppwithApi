@@ -40,10 +40,10 @@ export default function Crud() {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
+        console.log("Documento data:", docSnap.data());
         setprodInfo(docSnap.data());
       } else {
-        console.log("No such document!");
+        console.log("Nenhum documento!");
       }
 
     } catch (error: any) {
@@ -63,7 +63,7 @@ export default function Crud() {
         quantidade: quantidade
       });
     } catch (error: any) {
-      console.log("Error updating document: ", error);
+      console.log("Erro ao atualizar o documento: ", error);
     }
   }
 
@@ -129,8 +129,8 @@ export default function Crud() {
       </View>
       <View style={styles.dataContainer}>
         <Text style={{ color: "white", fontSize: 20 }}>{prodInfo?.Username}</Text>
-        <Text style={{ color: "white", fontSize: 20 }}>{prodInfo?.Email}</Text>
-        <Text style={{ color: "white", fontSize: 20 }}>{prodInfo?.Age}</Text>
+        <Text style={{ color: "white", fontSize: 20 }}>{prodInfo?.name}</Text>
+        <Text style={{ color: "white", fontSize: 20 }}>{prodInfo?.descricao}</Text>
       </View>
     </View>
   );
@@ -189,5 +189,6 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     borderRadius: 5,
+    
   },
 });
